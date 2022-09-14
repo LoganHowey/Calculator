@@ -8,7 +8,13 @@ public class ArithmeticEvaluatorTest {
 
     ArithmeticEvaluator evaluator = new ArithmeticEvaluator();
 
-    private ArithmeticStream toStream() {
+    private ArithmeticStream toStream(String ... values) {
+        String[] aStringArray = new String[values.length];
+        int i = 0;
+        for (String item : values){
+            aStringArray[i] = item;
+        }
+        return aStringArray;
     }
 
     @Test
