@@ -3,8 +3,6 @@ package Util;
 import javax.swing.*;
 import java.util.Stack;
 
-import static Util.Type.FINISHED;
-
 public class ArithmeticEvaluator {
 
     private Stack<ArithmeticSymbol> stack;
@@ -16,11 +14,21 @@ public class ArithmeticEvaluator {
         int current = 0;
         while (true){
             ArithmeticSymbol symbol = stream.next();
-            if (symbol.equals(Type.NUMBER)){
+            Type type = symbol.getType();
+            if (type.equals(Type.NUMBER)){
                 stack.push(symbol);
             }
-            else if (symbol.equals(Type.ADD) || symbol.equals(Type.SUBTRACT) || symbol.equals(Type.MULTIPLY) || symbol.equals(Type.DIVIDE)){
-
+            if (type.equals(Type.ADD) || type.equals(Type.SUBTRACT) || type.equals(Type.MULTIPLY) || type.equals(Type.DIVIDE)){
+                ArithmeticSymbol b = stack.pop();
+                ArithmeticSymbol a = stack.pop();
+                ArithmeticSymbol result = calculate(type, b, a);
+                stack.push(result);
+            }
+            if (type.equals(Type.COMPLETE)){
+                environment = (Environment) stack.pop();
+            }
+            if (type.equals(Type.FINISHED)){
+                break;
             }
         }
         //if data is number, contntinue to add
@@ -31,5 +39,21 @@ public class ArithmeticEvaluator {
         //repeat
         //if data is complete return final number
         //if data is finished end calculation
+    }
+
+    private ArithmeticSymbol calculate(Type type, ArithmeticSymbol b, ArithmeticSymbol a) {
+        ArithmeticSymbol results;
+        if (type.equals(Type.ADD)){
+            return results = a + b;
+        }
+        if (type.equals(Type.SUBTRACT)){
+            return results = a - b;
+        }
+        if (type.equals(Type.MULTIPLY)){
+            return results = a * b;
+        }
+        if (type.equals(Type.DIVIDE)){
+            return results = a / b;
+        }
     }
 }
