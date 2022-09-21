@@ -9,6 +9,8 @@ public class ArithmeticEvaluator {
 
     private Environment environment = new Environment();
 
+    int rs = 0;
+
     public void evaluate(ArithmeticStream stream) {
         // start adding stream data to stack
         int current = 0;
@@ -25,14 +27,20 @@ public class ArithmeticEvaluator {
                 stack.push(result);
             }
             if (type.equals(Type.COMPLETE)) {
+                if (stack.size() > 1){
+                    System.out.println("Invalid Equation");
+                    break;
+                }
                 environment.allResults.add(Double.parseDouble(stack.pop().getValue()));
+                rs++;
             }
             if (type.equals(Type.FINISHED)){
-                if (stack.size() != 0){
-                    System.out.println("Invalid Equation");
-                }
                 environment.print();
                 environment.printCount();
+                break;
+            }
+            if (type.equals(Type.INVALID)){
+                System.out.println("Invalid Symbol Input.");
                 break;
             }
         }
@@ -74,6 +82,11 @@ public class ArithmeticEvaluator {
     public int printCount(){
         int num = environment.printCount();
         return num;
+    }
+
+    public String[] printResults(){
+        String[] finalResults = new String[rs];
+        return finalResults = environment.printResults();
     }
 }
 
